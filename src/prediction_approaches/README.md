@@ -1,0 +1,1 @@
+This folder contains different approaches that are able to take a single anomaly data entry and return factors that likely contributeed to this entry being marked as an anomaly.
