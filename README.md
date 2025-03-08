@@ -1,6 +1,6 @@
 # Anomaly-Reasoning
 
-Data Processing and Reasoning for anomaly explanation
+Data Processing and Reasoning for anomaly explanation. Includes a small flask backend.
 
 ## Rules found through decision tree
 If HKONT or BSCHL or KTOSL are unique that entry is an anomaly
@@ -17,10 +17,10 @@ If there are more than 2 decimals after the comma is is an anomaly
 - Run the command `make run-backend` to start the server
 
 ## Make requests to the backend
-- You can make requests to the endpoint `http://127.0.0.1:5000/reasoning-for-anomaly`
+- You can make requests to the endpoint `http://127.0.0.1:5000/reasoning`
 - The request body needs to look like this:
 ```json
 {
- "anomaly_belnr": 507636
+ "anomaly_belnr": "507636"
 }
 ```
