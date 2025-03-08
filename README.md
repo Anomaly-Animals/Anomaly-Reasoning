@@ -27,6 +27,8 @@ To get started with Poetry, follow these steps:
 
 ## 📜 Anomaly Detection Rules
 
+### Our rules
+
 Here are the rules we've defined to identify anomalies:
 
 1. **Unique Entries for HKONT, BSCHL, or KTOSL**  
@@ -39,12 +41,20 @@ Here are the rules we've defined to identify anomalies:
          (data['WRBTR'] > 54000) & (data['WRBTR'] < 55000)]
     ```
 
-3. **Threshold-Based Rule 2**  
+3. **Threshold-Based Rule 2**
    Another anomaly is flagged under this condition:
     ```python
     data[(data['DMBTR'] > 92445000) & (data['DMBTR'] < 92446000) & 
          (data['WRBTR'] > 59585000) & (data['WRBTR'] < 59586000)]
     ```
+
+### Detecting new rules
+- Upon new data availability, to find new rules, check out the existing decision trees. 
+- If they still have an accuracy of 100 %, you can continue using them and the rules we derived from them.
+- If the accuracy decreases, you may want to look at why this happens and retrain the trees to derive new rules out of the new trees.
+- If new features are available try filtering the data on the uniqueness of these features.
+- If the filtered data only contains anomalies, you can use these filters for the uniqueness rules.
+- You may also want to check out the [get value ranges notebook](src/get_value_ranges.ipynb) once new data is available to find clusters and ranges of numerical values.
 
 ---
 
