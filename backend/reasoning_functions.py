@@ -1,13 +1,4 @@
 def check_anomaly_decision_tree(data, entry):
-    """
-    Checks if an entry with the given BELNR is an anomaly based on specific criteria.
-
-    Parameters:
-    belnr (str): The BELNR value to check for anomalies
-
-    Returns:
-    dict: JSON-compatible dictionary with anomaly information
-    """
     anomaly_features = []
     is_anomaly = False
 
@@ -61,18 +52,27 @@ def check_anomaly_decision_tree(data, entry):
 
     result = {"is_anomaly": is_anomaly, "anomaly_features": anomaly_features}
 
-        # Find previous and next anomalies if current entry is an anomaly
+    # Find previous and next anomalies if current entry is an anomaly
     if is_anomaly:
-        
+
         # Sort the data by BELNR to find previous and next anomalies
         sorted_data = data.sort_values(by="BELNR").reset_index(drop=True)
 
         # Find current position in sorted anomalies list
-        current_index = sorted_data[sorted_data["BELNR"] == belnr].index[0]
+        print(f"BELNR123: {entry['BELNR'].values[0]}")
+        current_index = sorted_data[
+            sorted_data["BELNR"] == entry["BELNR"].values[0]
+        ].index[0]
 
         # Check and assign previous and next BELNR if they exist
-        previous_belnr = sorted_data.loc[current_index - 1, "BELNR"] if current_index > 0 else None
-        next_belnr = sorted_data.loc[current_index + 1, "BELNR"] if current_index < len(sorted_data) - 1 else None
+        previous_belnr = (
+            sorted_data.loc[current_index - 1, "BELNR"] if current_index > 0 else None
+        )
+        next_belnr = (
+            sorted_data.loc[current_index + 1, "BELNR"]
+            if current_index < len(sorted_data) - 1
+            else None
+        )
 
         # Add previous and next anomaly information
         result["previous_anomaly_belnr"] = previous_belnr

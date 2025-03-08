@@ -1,26 +1,83 @@
-# Anomaly-Reasoning
+![Anomaly Reasoning](assets/ClarifAI_logo.png)
 
-Data Processing and Reasoning for anomaly explanation
+# Anomaly Reasoning
 
-## Rules found through decision tree
-If HKONT or BSCHL or KTOSL are unique that entry is an anomaly
+Welcome to the **Anomaly Reasoning** project, where we focus on data processing and reasoning for anomaly explanations. This project includes a small Flask backend to serve the GUI.
 
-If data[(data['DMBTR'] > 910000) & (data['DMBTR'] < 911000) & (data['WRBTR'] > 54000) & (data['WRBTR'] < 55000)]
+---
 
-If data[(data['DMBTR'] > 92445000) & (data['DMBTR'] < 92446000) & (data['WRBTR'] > 59585000) & (data['WRBTR'] < 59586000)]
+## 🚀 Getting Started
+
+### 📦 Dependency Management with Poetry
+In this project, we use **Poetry** as the dependency manager for Python.
+
+To get started with Poetry, follow these steps:
+
+1. Visit the [Poetry website](https://python-poetry.org/) for more details.
+2. If you're using **Homebrew**, you can install Poetry via:
+    ```bash
+    brew install poetry
+    ```
+3. After installing Poetry, navigate to the root directory of the project and run the following command to install the dependencies:
+    ```bash
+    poetry install --no-root
+    ```
+
+---
+
+## 📜 Anomaly Detection Rules
+
+Here are the rules we've defined to identify anomalies:
+
+1. **Unique Entries for HKONT, BSCHL, or KTOSL**  
+   If any of the fields `HKONT`, `BSCHL`, or `KTOSL` are unique, the entry is considered an anomaly.
+
+2. **Threshold-Based Rule 1**  
+   An anomaly is flagged if the following conditions hold true:
+    ```python
+    data[(data['DMBTR'] > 910000) & (data['DMBTR'] < 911000) & 
+         (data['WRBTR'] > 54000) & (data['WRBTR'] < 55000)]
+    ```
+
+3. **Threshold-Based Rule 2**  
+   Another anomaly is flagged under this condition:
+    ```python
+    data[(data['DMBTR'] > 92445000) & (data['DMBTR'] < 92446000) & 
+         (data['WRBTR'] > 59585000) & (data['WRBTR'] < 59586000)]
+    ```
+
+---
+
+## 🖥️ Starting the Backend
+
+To run the backend and start processing requests, follow these steps:
+
+1. Ensure that Flask and all other necessary packages are installed by running:
+    ```bash
+    poetry install
+    ```
+
+2. Once everything is installed, you can start the backend by running the following command:
+    ```bash
+    make run-backend
+    ```
+
+---
+
+## 📡 Making Requests to the Backend
+
+You can interact with the backend by making **HTTP requests** to the following endpoint:
+
+http://127.0.0.1:5000/reasoning
 
 
-If there are more than 2 decimals after the comma is is an anomaly
+### Request Body Format
+When making a request, the body should be in **JSON format**, as shown below:
 
-## Start the Backend
-- Make sure you have flask and other necessary packages installed via `poetry install`. 
-- Run the command `make run-backend` to start the server
-
-## Make requests to the backend
-- You can make requests to the endpoint `http://127.0.0.1:5000/reasoning-for-anomaly`
-- The request body needs to look like this:
 ```json
 {
- "anomaly_belnr": 507636
+  "anomaly_belnr": "507636"
 }
 ```
+
+This will trigger the reasoning engine to process the anomaly for the given anomaly_belnr value.
