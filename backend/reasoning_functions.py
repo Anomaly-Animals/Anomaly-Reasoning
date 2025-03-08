@@ -1,7 +1,4 @@
-import pandas as pd
-
-
-def check_anomaly_decision_tree(belnr):
+def check_anomaly_decision_tree(data, entry):
     """
     Checks if an entry with the given BELNR is an anomaly based on specific criteria.
 
@@ -11,26 +8,6 @@ def check_anomaly_decision_tree(belnr):
     Returns:
     dict: JSON-compatible dictionary with anomaly information
     """
-    # Load data from CSV file
-    try:
-        data = pd.read_csv("././data/anomal_data.csv")
-    except Exception as e:
-        return {
-            "is_anomaly": False,
-            "error": f"Error reading file: {str(e)}",
-            "features": [],
-        }
-
-    # Filter data for the given BELNR
-    entry = data[data["BELNR"] == belnr]
-
-    if entry.empty:
-        return {
-            "is_anomaly": False,
-            "error": "No entry found with this BELNR",
-            "features": [],
-        }
-
     anomaly_features = []
     is_anomaly = False
 
