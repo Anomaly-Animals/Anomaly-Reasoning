@@ -13,7 +13,7 @@ def check_anomaly_decision_tree(belnr):
     """
     # Load data from CSV file
     try:
-        data = pd.read_csv("././data/datathon_data.csv")
+        data = pd.read_csv("././data/anomal_data.csv")
     except Exception as e:
         return {
             "is_anomaly": False,
@@ -44,7 +44,7 @@ def check_anomaly_decision_tree(belnr):
                     {
                         "feature": field,
                         "value": str(field_value),
-                        "reason": f"Unique {field} value",
+                        "reason": f"The value {field_value} didn't appear before in any entry of the field {field}. You may want to check this entry.",
                     }
                 )
 
@@ -61,7 +61,7 @@ def check_anomaly_decision_tree(belnr):
             {
                 "feature": "DMBTR_WRBTR_RANGE_1",
                 "value": f"DMBTR={entry['DMBTR'].values[0]}, WRBTR={entry['WRBTR'].values[0]}",
-                "reason": "Values fall in suspicious range (DMBTR: 910000-911000, WRBTR: 54000-55000)",
+                "reason": f"The values for DMBTR ({entry['DMBTR'].values[0]}) and WRBTR ({entry['WRBTR'].values[0]}) fall into a range that was typical for previous anomalies (DMBTR: 910000-911000, WRBTR: 54000-55000). You may want to check this entry.",
             }
         )
 
@@ -78,11 +78,28 @@ def check_anomaly_decision_tree(belnr):
             {
                 "feature": "DMBTR_WRBTR_RANGE_2",
                 "value": f"DMBTR={entry['DMBTR'].values[0]}, WRBTR={entry['WRBTR'].values[0]}",
-                "reason": "Values fall in suspicious range (DMBTR: 92445000-92446000, WRBTR: 59585000-59586000)",
+                "reason": f"The values for DMBTR ({entry['DMBTR'].values[0]}) and WRBTR ({entry['WRBTR'].values[0]}) fall into a range that was typical for previous anomalies (DMBTR: 92445000-92446000, WRBTR: 59585000-59586000).",
             }
         )
 
     result = {"is_anomaly": is_anomaly, "anomaly_features": anomaly_features}
+
+        # Find previous and next anomalies if current entry is an anomaly
+    if is_anomaly:
+        
+        # Sort the data by BELNR to find previous and next anomalies
+        sorted_data = data.sort_values(by="BELNR").reset_index(drop=True)
+
+        # Find current position in sorted anomalies list
+        current_index = sorted_data[sorted_data["BELNR"] == belnr].index[0]
+
+        # Check and assign previous and next BELNR if they exist
+        previous_belnr = sorted_data.loc[current_index - 1, "BELNR"] if current_index > 0 else None
+        next_belnr = sorted_data.loc[current_index + 1, "BELNR"] if current_index < len(sorted_data) - 1 else None
+
+        # Add previous and next anomaly information
+        result["previous_anomaly_belnr"] = previous_belnr
+        result["next_anomaly_belnr"] = next_belnr
 
     if not is_anomaly:
         result["message"] = "No anomalies detected"
