@@ -46,7 +46,7 @@ def check_anomaly_decision_tree(data, entry):
             {
                 "feature": "DMBTR_WRBTR_RANGE_2",
                 "value": f"DMBTR={entry['DMBTR'].values[0]}, WRBTR={entry['WRBTR'].values[0]}",
-                "reason": f"The values for DMBTR ({entry['DMBTR'].values[0]}) and WRBTR ({entry['WRBTR'].values[0]}) fall into a range that was typical for previous anomalies (DMBTR: 92445000-92446000, WRBTR: 59585000-59586000).",
+                "reason": f"The values for DMBTR ({entry['DMBTR'].values[0]}) and WRBTR ({entry['WRBTR'].values[0]}) fall into a range that was typical for previous anomalies (DMBTR: 92445000-92446000, WRBTR: 59585000-59586000). You may want to check this entry.",
             }
         )
 
